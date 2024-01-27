@@ -1,4 +1,4 @@
-package UMC.campusNote.user;
+package UMC.campusNote.user.entity;
 
 import UMC.campusNote.common.BaseEntity;
 import UMC.campusNote.friend.Friend;
