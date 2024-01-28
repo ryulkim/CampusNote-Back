@@ -1,5 +1,6 @@
 package UMC.campusNote.user.controller;
 
+import UMC.campusNote.common.ApiResponse;
 import UMC.campusNote.common.exception.handler.ExceptionHandler;
 import UMC.campusNote.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +29,8 @@ public class UserController {
     }
 
     @GetMapping("/test2")
-    public String test2(){
-        return "test2";
+    public ApiResponse test2(){
+        return ApiResponse.onSuccess("test2");
     }
 
 }

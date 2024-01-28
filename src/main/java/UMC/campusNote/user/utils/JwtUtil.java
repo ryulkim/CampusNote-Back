@@ -10,8 +10,6 @@ import io.jsonwebtoken.MalformedJwtException;
 
 import java.util.Date;
 
-import static UMC.campusNote.common.code.status.ErrorStatus.TOKEN_EXPIRED;
-import static UMC.campusNote.common.code.status.ErrorStatus.TOKEN_MALFORM;
 import static UMC.campusNote.user.service.UserService.secretKey;
 
 public class JwtUtil {

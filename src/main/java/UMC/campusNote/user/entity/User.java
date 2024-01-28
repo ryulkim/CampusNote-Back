@@ -25,6 +25,9 @@ public class User extends BaseEntity {
     @Column(name = "USER_ID")
     private Long id;
 
+    @Column(length = 100)
+    private String clientId;
+
     @Column(length = 20)
     private String name;
 
@@ -53,4 +56,6 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @Builder.Default
     List<UserLesson> userLessonList = new ArrayList<>();
+
+
 }
