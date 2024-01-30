@@ -1,12 +1,9 @@
 package UMC.campusNote.user.utils;
 
 
-import UMC.campusNote.common.exception.GeneralException;
 
-import UMC.campusNote.common.exception.handler.ExceptionHandler;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

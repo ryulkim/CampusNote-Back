@@ -3,15 +3,14 @@ package UMC.campusNote.user.controller;
 import UMC.campusNote.common.ApiResponse;
 
 import UMC.campusNote.user.dto.JoinReqDto;
+import UMC.campusNote.user.dto.JoinResDto;
 import UMC.campusNote.user.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -20,14 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     private final UserService userService;
 
-
     @PostMapping("/signUp")
-    public ApiResponse join(JoinReqDto joinReqDto){
-        //예외 처리 필요(동시 가입 할 경우, 빈 값일 경우 등등등)
+    public ApiResponse<JoinResDto> join(@RequestBody @Valid JoinReqDto joinReqDto){
 
-        userService.join(joinReqDto);
+        JoinResDto res = userService.join(joinReqDto);
 
-        return ApiResponse.onSuccess(null);
+        return ApiResponse.onSuccess(res);
     }
 
 }

@@ -1,6 +1,8 @@
 package UMC.campusNote.user.service;
 
+import UMC.campusNote.common.exception.GeneralException;
 import UMC.campusNote.user.dto.JoinReqDto;
+import UMC.campusNote.user.dto.JoinResDto;
 import UMC.campusNote.user.entity.User;
 import UMC.campusNote.user.repository.UserRepository;
 import UMC.campusNote.user.utils.JwtUtil;
@@ -10,6 +12,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
+
+import static UMC.campusNote.common.code.status.ErrorStatus.USER_ALREADY_EXIST;
 import static UMC.campusNote.user.entity.Role.*;
 
 @Service
@@ -18,7 +22,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
-    private Long expiredAtMs=1000*60L; //1000*60*60L;
+    private Long expiredAtMs=1000*60*60L; //1000*60*60L;
 
 
     public String createToken(String userName){
@@ -34,24 +38,17 @@ public class UserService {
         return true;
     }
 
-    public void join(JoinReqDto joinReqDto){
+    public JoinResDto join(JoinReqDto joinReqDto){
 
-        //예외처리 필요, 이름이라던지 뭐 그런거라던지..
+        User existUser = userRepository.findByClientId(joinReqDto.getClientId());
 
-        User user1= User.builder()
-                        .clientId(joinReqDto.getClientId())
-                        .img("123123")
-                        .name(joinReqDto.getName())
-                        .role(USER.getRole())
-                        .university("인하대")
-                        .currentSemester("202")
-                        .build();
+        if(existUser!=null) throw new GeneralException(USER_ALREADY_EXIST);
 
-        String token=createToken(joinReqDto.getName());
+        User newUser = joinReqDto.toEntity();
+        userRepository.save(newUser);
 
-        //토큰 값 응답
+        String token=createToken(newUser.getName());
 
-        userRepository.save(user1);
-
+        return JoinResDto.fromEntity(token);
     }
 }
