@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,42 +26,52 @@ import java.util.List;
 public class JwtFilter extends OncePerRequestFilter {
 
     private final UserService userService;
-    private final String secretKey;
+    private final JwtUtil jwtUtil;
+
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        final String authorization=request.getHeader(HttpHeaders.AUTHORIZATION);
-        log.info("authorization:{}",authorization);
+        try {
 
+            String token = resolveToken(request);
+
+            //Token validation 여부
+            if (token==null||!jwtUtil.validToken(token)) {
+                log.error("token이 유효하지 않습니다: {}",token);
+                filterChain.doFilter(request, response);
+                return;
+            }
+
+            //UserName Token에서 꺼내기
+            String userName = jwtUtil.getUserName(token);
+            log.info("userName:{}", userName);
+
+            //권한 부여 => 수정 필요
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(userName, null, List.of(new SimpleGrantedAuthority("USER")));
+            //Detail을 넣어준다.
+            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+
+        filterChain.doFilter(request, response);
+    }
+
+    private String resolveToken(HttpServletRequest request){
+
+        String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         // token 안 보내면 Block
-        if(authorization==null || !authorization.startsWith("Bearer ")){
-            log.error("authorization이 없습니다");
-            filterChain.doFilter(request,response);
-            return;
+        if (authorization == null || !authorization.startsWith("Bearer ")) {
+            return null;
         }
 
         //Token 꺼내기
-        String token=authorization.split(" ")[1];
-
-        //Token Expired 되었는지 여부
-        if(JwtUtil.isExpired(token)){
-            log.error("Token이 만료되었습니다.");
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        //UserName Token에서 꺼내기
-        String userName=JwtUtil.getUserName(token);
-        log.info("userName:{}",userName);
-
-        //권한 부여
-        UsernamePasswordAuthenticationToken authenticationToken=
-                new UsernamePasswordAuthenticationToken(userName, null, List.of(new SimpleGrantedAuthority("USER")));
-        //Detail을 넣어준다.
-        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        filterChain.doFilter(request,response);
+        return authorization.split(" ")[1];
     }
 
 }
