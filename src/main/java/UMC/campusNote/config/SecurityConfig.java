@@ -1,7 +1,6 @@
 package UMC.campusNote.config;
 
-import UMC.campusNote.user.service.OAuth2UserService;
-import UMC.campusNote.user.service.UserService;
+import UMC.campusNote.auth.service.AuthServiceImpl;
 import UMC.campusNote.user.utils.JwtUtil;
 
 import jakarta.servlet.ServletException;
@@ -39,8 +38,8 @@ import java.io.IOException;
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final OAuth2UserService oAuth2UserService;
-    private final UserService userService;
+    //private final OAuth2UserService oAuth2UserService;
+    private final AuthServiceImpl authServiceImpl;
     private final JwtUtil jwtUtil;
 
 
@@ -55,7 +54,7 @@ public class SecurityConfig {
 
         //권한에 따라 다르게
         http.authorizeRequests()
-                .requestMatchers("/api/v1/users/join", "/api/v1/users/login","/login", "/oauth2/**", "/api/vi/auth/**").permitAll()
+                .requestMatchers("/api/v1/users/join", "/api/v1/users/login","/login", "/oauth2/**", "/api/v1/auth/**", "/swagger-ui/**").permitAll()
                 .requestMatchers("/api/v1/user/**").hasRole("USER")
                 .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                 .requestMatchers("/api/v1/**").authenticated()
@@ -67,10 +66,10 @@ public class SecurityConfig {
         );
 
         //filter 적용
-        http.addFilterBefore(new JwtFilter(userService, jwtUtil), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JwtFilter(authServiceImpl, jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
 
-        //로그아웃 기능 추가 필요
+        /*//로그아웃 기능 추가 필요
         http.oauth2Login(oauth2Configurer->oauth2Configurer
                 .authorizationEndpoint(authorizationEndpointConfig -> authorizationEndpointConfig.baseUri("/api/vi/auth/oauth2")) //default는 /oauth2/authorization, 접근하고 싶으면 baseUri 뒤에 registerId 넣어야 함
                 .successHandler(successHandler())
@@ -84,7 +83,7 @@ public class SecurityConfig {
                                     response.sendRedirect("/api/oauth2/logout-success");
                                 })
                         .deleteCookies("JSESSIONID")
-                );
+                );*/
 
         return http.build();
     }
@@ -111,13 +110,13 @@ public class SecurityConfig {
             String img = defaultOAuth2User.getAttributes().get("img").toString();
 
             // 회원 정보 조회
-            boolean isPresentUser= userService.isPresentUser(clientId);
+            boolean isPresentUser= authServiceImpl.isPresentUser(clientId);
 
             if(!isPresentUser) { //회원이 아닐 경우
                 response.sendRedirect("/auth/oauth2-response/join?id="+clientId+"&img="+img);
             }
             else { //기존 회원일 경우
-                String token = userService.createToken(clientId); //이거 값 바꿔야 됨
+                String token = authServiceImpl.createToken(clientId); //이거 값 바꿔야 됨
                 response.sendRedirect("/auth/oauth2-response/login/"+token);
             }
 

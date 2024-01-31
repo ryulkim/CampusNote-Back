@@ -21,11 +21,11 @@ import static UMC.campusNote.user.entity.Role.*;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final JwtUtil jwtUtil;
-    private Long expiredAtMs=1000*60*60L; //1000*60*60L;
+    //private final JwtUtil jwtUtil;
+    //private Long expiredAtMs=1000*60*60L; //1000*60*60L;
 
 
-    public String createToken(String userName){
+    /*public String createToken(String userName){
         //인증 과정 필요(userName과 password를 사용한 인증 구현 필요)
         return jwtUtil.createJwt(userName, expiredAtMs);
     }
@@ -50,5 +50,5 @@ public class UserService {
         String token=createToken(newUser.getName());
 
         return JoinResDto.fromEntity(token);
-    }
+    }*/
 }

@@ -1,10 +1,8 @@
-package UMC.campusNote.user.dto;
+package UMC.campusNote.auth.dto;
 
-import UMC.campusNote.auth.dto.LoginResDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @Getter
@@ -17,6 +15,4 @@ public class JoinResDto {
                 .token(token)
                 .build();
     }
-
-
 }

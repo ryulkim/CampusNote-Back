@@ -1,3 +1,4 @@
+/*
 package UMC.campusNote.user.service;
 
 import UMC.campusNote.user.repository.UserRepository;
@@ -21,7 +22,7 @@ import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
-@Service
+//@Service
 public class OAuth2UserService extends DefaultOAuth2UserService {
 
     @Override
@@ -59,3 +60,4 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
         return new DefaultOAuth2User(authorities, attribute, userNameAttributeName);
     }
 }
+*/

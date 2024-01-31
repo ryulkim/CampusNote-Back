@@ -1,3 +1,4 @@
+/*
 package UMC.campusNote.user.controller;
 
 import org.springframework.stereotype.Controller;
@@ -12,3 +13,4 @@ public class LoginController {
         return "login";
     }
 }
+*/

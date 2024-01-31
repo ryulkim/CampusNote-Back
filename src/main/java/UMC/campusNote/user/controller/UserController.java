@@ -19,12 +19,12 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
 
-    @PostMapping("/signUp")
+   /* @PostMapping("/signUp")
     public ApiResponse<JoinResDto> join(@RequestBody @Valid JoinReqDto joinReqDto){
 
         JoinResDto res = userService.join(joinReqDto);
 
         return ApiResponse.onSuccess(res);
-    }
+    }*/
 
 }
