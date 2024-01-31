@@ -14,6 +14,5 @@ import lombok.NoArgsConstructor;
 public class LoginReqDto {
 
     @NotBlank
-    @Max(100)
     private String clientId;
 }

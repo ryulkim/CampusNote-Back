@@ -41,6 +41,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public LoginResDto login(LoginReqDto loginReqDto) {
+        log.info("loginReqDto.getClientId() : {}", loginReqDto.getClientId());
         User user = userRepository.findByClientId(loginReqDto.getClientId())
                 .orElseThrow(() -> new GeneralException(USER_NOT_FOUND));
         String accessToken = jwtProvider.generateToken(user);
