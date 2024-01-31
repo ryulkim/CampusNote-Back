@@ -1,16 +1,15 @@
 package UMC.campusNote.auth.service;
 
-import UMC.campusNote.auth.dto.LoginReqDto;
-import UMC.campusNote.auth.dto.LoginResDto;
-import UMC.campusNote.user.dto.JoinReqDto;
-import UMC.campusNote.user.dto.JoinResDto;
+import UMC.campusNote.auth.dto.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public interface AuthService {
 
-    String createToken(String userName);
 
-    boolean isPresentUser(String clientId);
     JoinResDto join(JoinReqDto joinReqDto);
 
     LoginResDto login(LoginReqDto loginReqDto);
+
+    RefreshResDto refreshToken(HttpServletRequest request, HttpServletResponse response);
 }

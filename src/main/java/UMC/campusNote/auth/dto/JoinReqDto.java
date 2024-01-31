@@ -35,7 +35,7 @@ public class JoinReqDto {
                 .clientId(clientId)
                 .img(img)
                 .name(name)
-                .role(USER.getRole())
+                .role(USER)
                 .university(university)
                 .currentSemester(semester)
                 .build();
