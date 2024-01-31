@@ -6,11 +6,13 @@ import lombok.Builder;
 @AllArgsConstructor
 @Builder
 public class LoginResDto {
-    private String token;
+    private String accessToken;
+    private String refreshToken;
 
-    public static LoginResDto fromEntity(String token){
+    public static LoginResDto fromEntity(String accessToken, String refreshToken){
         return LoginResDto.builder()
-                .token(token)
+                .accessToken(refreshToken)
+                .refreshToken(refreshToken)
                 .build();
     }
 }
