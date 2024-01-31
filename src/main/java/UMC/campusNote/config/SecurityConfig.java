@@ -1,6 +1,8 @@
 package UMC.campusNote.config;
 
 import UMC.campusNote.auth.jwt.JwtAuthenticationFilter;
+import UMC.campusNote.common.exception.handler.CustomAccessDeniedHandler;
+import UMC.campusNote.common.exception.handler.CustomAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,6 +45,8 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
     private final LogoutHandler logoutHandler;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
 
 
@@ -61,6 +65,8 @@ public class SecurityConfig {
                                 .anyRequest()
                                 .authenticated()
                 )
+                .headers().frameOptions().disable() //h2 콘솔 접근하기 위해 추가 나중에 지우면 됨
+                .and()
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .authenticationProvider(authenticationProvider)
@@ -68,8 +74,9 @@ public class SecurityConfig {
                         logout.logoutUrl("/api/v1/auth/logout")
                                 .addLogoutHandler(logoutHandler)
                                 .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext())
-                )
-        ;
+                );
+        http.exceptionHandling().authenticationEntryPoint(customAuthenticationEntryPoint);
+        http.exceptionHandling().accessDeniedHandler(customAccessDeniedHandler);
         return http.build();
 
     }

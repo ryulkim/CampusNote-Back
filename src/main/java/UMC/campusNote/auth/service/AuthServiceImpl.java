@@ -1,19 +1,20 @@
 package UMC.campusNote.auth.service;
 
-import UMC.campusNote.auth.dto.JoinReqDto;
-import UMC.campusNote.auth.dto.JoinResDto;
-import UMC.campusNote.auth.dto.LoginReqDto;
-import UMC.campusNote.auth.dto.LoginResDto;
+import UMC.campusNote.auth.dto.*;
 import UMC.campusNote.auth.jwt.JwtProvider;
 import UMC.campusNote.auth.redis.RedisProvider;
 import UMC.campusNote.common.exception.GeneralException;
 import UMC.campusNote.user.entity.User;
 import UMC.campusNote.user.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static UMC.campusNote.auth.jwt.JwtProvider.HEADER_AUTHORIZATION;
+import static UMC.campusNote.auth.jwt.JwtProvider.TOKEN_PREFIX;
 import static UMC.campusNote.common.code.status.ErrorStatus.USER_NOT_FOUND;
 
 
@@ -47,6 +48,26 @@ public class AuthServiceImpl implements AuthService {
         revokeAllUserTokens(user);
         saveUserToken(user, refreshToken);
         return LoginResDto.fromEntity(accessToken, refreshToken);
+    }
+
+    @Override
+    public RefreshResDto refreshToken(HttpServletRequest request, HttpServletResponse response) {
+        final String authHeader = request.getHeader(HEADER_AUTHORIZATION);
+        final String refreshToken;
+        final String userEmail;
+        if (authHeader == null || !authHeader.startsWith(TOKEN_PREFIX))
+            return null;
+        refreshToken = authHeader.substring(7);
+        userEmail = jwtProvider.extractUsername(refreshToken);
+        if (userEmail != null) {
+            User user = userRepository.findByClientId(userEmail)
+                    .orElseThrow(() -> new GeneralException(USER_NOT_FOUND));
+            if (jwtProvider.isTokenValid(refreshToken, user)) {
+                String accessToken = jwtProvider.generateToken(user);
+                return RefreshResDto.fromEntity(accessToken);
+            }
+        }
+        return null;
     }
 
     private void saveUserToken(User user, String refreshToken) {

@@ -11,7 +11,7 @@ public class LoginResDto {
 
     public static LoginResDto fromEntity(String accessToken, String refreshToken){
         return LoginResDto.builder()
-                .accessToken(refreshToken)
+                .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
     }
