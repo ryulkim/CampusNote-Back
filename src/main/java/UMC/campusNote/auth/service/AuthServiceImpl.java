@@ -73,6 +73,7 @@ public class AuthServiceImpl implements AuthService {
     private void saveUserToken(User user, String refreshToken) {
         //key는 사용자 이메일과 토큰 발급 시간으로 구성 // 추후에 발급 시간이 아닌 기기로 구분하는 거로 수정해야함
         //redisService.setValueOps(user.getEmail() + ":" + issuedAt, refreshToken);
+        log.info("user.getClientId() : {}", user.getClientId());
         redisProvider.setValueOps(user.getClientId(), refreshToken);
         redisProvider.expireValues(user.getClientId());
     }

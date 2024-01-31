@@ -2,7 +2,6 @@ package UMC.campusNote.auth.controller;
 
 import UMC.campusNote.auth.dto.*;
 import UMC.campusNote.auth.service.AuthService;
-import UMC.campusNote.auth.service.AuthServiceImpl;
 import UMC.campusNote.common.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
