@@ -21,6 +21,7 @@ import org.springframework.security.config.annotation.web.configurers.CsrfConfig
 import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
@@ -40,7 +41,8 @@ import java.io.IOException;
 public class SecurityConfig {
     //private final OAuth2UserService oAuth2UserService;
     private final AuthServiceImpl authServiceImpl;
-    private final JwtUtil jwtUtil;
+    private final JwtFilter jwtFilter;
+
 
 
     @Bean
@@ -66,7 +68,7 @@ public class SecurityConfig {
         );
 
         //filter 적용
-        http.addFilterBefore(new JwtFilter(authServiceImpl, jwtUtil), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
 
         /*//로그아웃 기능 추가 필요

@@ -2,8 +2,8 @@ package UMC.campusNote.user.controller;
 
 import UMC.campusNote.common.ApiResponse;
 
-import UMC.campusNote.user.dto.JoinReqDto;
-import UMC.campusNote.user.dto.JoinResDto;
+//import UMC.campusNote.user.dto.JoinReqDto;
+//import UMC.campusNote.user.dto.JoinResDto;
 import UMC.campusNote.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/v1/user")
 public class UserController {
     private final UserService userService;
 
@@ -26,5 +26,10 @@ public class UserController {
 
         return ApiResponse.onSuccess(res);
     }*/
+
+    @GetMapping
+    public ApiResponse<String> test(){
+        return ApiResponse.onSuccess("user");
+    }
 
 }

@@ -1,10 +1,12 @@
 package UMC.campusNote.auth.service;
 
+import UMC.campusNote.auth.dto.JoinResDto;
+import UMC.campusNote.auth.dto.JoinReqDto;
 import UMC.campusNote.auth.dto.LoginReqDto;
 import UMC.campusNote.auth.dto.LoginResDto;
 import UMC.campusNote.common.exception.GeneralException;
-import UMC.campusNote.user.dto.JoinReqDto;
-import UMC.campusNote.user.dto.JoinResDto;
+
+
 import UMC.campusNote.user.entity.User;
 import UMC.campusNote.user.repository.UserRepository;
 import UMC.campusNote.user.utils.JwtUtil;
@@ -49,10 +51,12 @@ public class AuthServiceImpl implements AuthService {
         isPresentUser(joinReqDto.getClientId());
 
         User newUser = joinReqDto.toEntity();
+        log.info("clientId: "+newUser.getClientId());
+        log.info("role: "+newUser.getRole());
         userRepository.save(newUser);
 
 
-        String token=createToken(newUser.getName());
+        String token=createToken(newUser.getClientId());
 
         return JoinResDto.fromEntity(token);
     }

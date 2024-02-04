@@ -12,18 +12,23 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.List;
 
 @Slf4j
+@Component
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 
     private final AuthServiceImpl authServiceImpl;
     private final JwtUtil jwtUtil;
+    private final UserDetailsService userDetailsService;
 
 
     @Override
@@ -43,13 +48,38 @@ public class JwtFilter extends OncePerRequestFilter {
             String userName = jwtUtil.getUserName(token);
             log.info("userName:{}", userName);
 
-            //권한 부여 => 수정 필요
-            UsernamePasswordAuthenticationToken authenticationToken =
-                    new UsernamePasswordAuthenticationToken(userName, null, List.of(new SimpleGrantedAuthority("USER")));
-            //Detail을 넣어준다.
-            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            // 토큰이 유효하고 만료되지 않았다면 SecurityContext에 인증 정보를 저장
+            // 토큰이 만료되지 않았는지는 JwtService에서 확인
+            if (SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = this.userDetailsService.loadUserByUsername(userName);
 
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                log.info(userDetails.getUsername());
+                userDetails.getAuthorities().
+                        stream()
+                        .map(a-> {
+                            log.info(a.getAuthority());
+                            return null;
+                        })
+                        ;
+
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                        userDetails,
+                        null,
+                        userDetails.getAuthorities()
+                );
+                authToken.setDetails(
+                        new WebAuthenticationDetailsSource().buildDetails(request)
+                );
+                SecurityContextHolder.getContext().setAuthentication(authToken);
+            }
+
+//            //권한 부여 => 수정 필요
+//            UsernamePasswordAuthenticationToken authenticationToken =
+//                    new UsernamePasswordAuthenticationToken(userName, null, List.of(new SimpleGrantedAuthority("USER")));
+//            //Detail을 넣어준다.
+//            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+//
+//            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
         } catch (Exception exception) {
             exception.printStackTrace();

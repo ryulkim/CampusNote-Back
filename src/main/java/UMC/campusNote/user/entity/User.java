@@ -8,18 +8,24 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+@Slf4j
 @Entity
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")
-public class User extends BaseEntity {
+public class User extends BaseEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "USER_ID")
@@ -43,7 +49,7 @@ public class User extends BaseEntity {
     private String currentSemester;
 
     @Column(length = 10)
-    private String role;
+    private String role; //USER, ADMIN, MANAGER
 
     @OneToMany(mappedBy = "user1", cascade = CascadeType.ALL)
     @Builder.Default
@@ -58,4 +64,41 @@ public class User extends BaseEntity {
     List<UserLesson> userLessonList = new ArrayList<>();
 
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Role role1= Role.valueOf(role);
+        log.info("role"+role);
+
+        return role1.getAuthorities();
+    }
+
+    @Override
+    public String getPassword() {
+        return clientId;
+    }
+
+    @Override
+    public String getUsername() {
+        return clientId;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

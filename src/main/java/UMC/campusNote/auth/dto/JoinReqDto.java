@@ -7,9 +7,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+import static UMC.campusNote.user.entity.Role.ADMIN;
 import static UMC.campusNote.user.entity.Role.USER;
 
+@Slf4j
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -31,11 +34,12 @@ public class JoinReqDto {
     private String img;
 
     public User toEntity(){
+        log.info("role :"+ADMIN.name());
         return User.builder()
                 .clientId(clientId)
                 .img(img)
                 .name(name)
-                .role(USER.getRole())
+                .role(ADMIN.name())
                 .university(university)
                 .currentSemester(semester)
                 .build();
