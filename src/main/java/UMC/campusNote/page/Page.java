@@ -2,7 +2,6 @@ package UMC.campusNote.page;
 
 import UMC.campusNote.common.BaseEntity;
 import UMC.campusNote.note.Note;
-import UMC.campusNote.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,6 +21,7 @@ public class Page extends BaseEntity {
     @JoinColumn(name = "NOTE_ID")
     private Note note;
 
+    @Lob
     private String handWritingSVG; // 필기 svg
 
     private Integer pageNumber; // 페이지 넘버
