@@ -31,6 +31,10 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public JoinResDto join(JoinReqDto joinReqDto) {
+        userRepository.findByClientId(joinReqDto.getClientId())
+                .ifPresent( user -> {
+                    throw new GeneralException(USER_ALREADY_EXIST);
+                });
         User user = joinReqDto.toEntity();
         User savedUser = userRepository.save(user);
         String accessToken = jwtProvider.generateToken(user);
@@ -42,7 +46,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public LoginResDto login(LoginReqDto loginReqDto) {
-        log.info("loginReqDto.getClientId() : {}", loginReqDto.getClientId());
+        //log.info("loginReqDto.getClientId() : {}", loginReqDto.getClientId());
         User user = userRepository.findByClientId(loginReqDto.getClientId())
                 .orElseThrow(() -> new GeneralException(USER_NOT_FOUND));
         String accessToken = jwtProvider.generateToken(user);
