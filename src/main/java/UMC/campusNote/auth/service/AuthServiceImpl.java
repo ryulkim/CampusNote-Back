@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static UMC.campusNote.auth.jwt.JwtProvider.HEADER_AUTHORIZATION;
 import static UMC.campusNote.auth.jwt.JwtProvider.TOKEN_PREFIX;
+import static UMC.campusNote.common.code.status.ErrorStatus.USER_ALREADY_EXIST;
 import static UMC.campusNote.common.code.status.ErrorStatus.USER_NOT_FOUND;
 
 
@@ -35,7 +36,7 @@ public class AuthServiceImpl implements AuthService {
         String accessToken = jwtProvider.generateToken(user);
         String refreshToken = jwtProvider.generateRefreshToken(user);
         saveUserToken(savedUser, refreshToken);
-        return JoinResDto.fromEntity(accessToken, refreshToken);
+        return JoinResDto.fromEntity(savedUser.getId(), accessToken, refreshToken);
     }
 
     @Override
@@ -48,7 +49,7 @@ public class AuthServiceImpl implements AuthService {
         String refreshToken = jwtProvider.generateRefreshToken(user);
         revokeAllUserTokens(user);
         saveUserToken(user, refreshToken);
-        return LoginResDto.fromEntity(accessToken, refreshToken);
+        return LoginResDto.fromEntity(user.getId(), accessToken, refreshToken);
     }
 
     @Override
