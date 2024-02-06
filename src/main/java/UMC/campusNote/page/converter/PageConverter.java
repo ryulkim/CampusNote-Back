@@ -1,6 +1,9 @@
-package UMC.campusNote.page;
+package UMC.campusNote.page.converter;
 
 import UMC.campusNote.note.Note;
+import UMC.campusNote.page.dto.PageRequestDTO;
+import UMC.campusNote.page.dto.PageResponseDTO;
+import UMC.campusNote.page.entity.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

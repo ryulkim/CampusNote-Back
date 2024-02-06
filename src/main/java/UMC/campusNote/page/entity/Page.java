@@ -1,4 +1,4 @@
-package UMC.campusNote.page;
+package UMC.campusNote.page.entity;
 
 import UMC.campusNote.common.BaseEntity;
 import UMC.campusNote.note.Note;

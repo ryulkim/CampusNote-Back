@@ -1,12 +1,11 @@
 package UMC.campusNote.note;
 
 import UMC.campusNote.audio.Audio;
-import UMC.campusNote.classSideNote.ClassSideNote;
 import UMC.campusNote.common.BaseEntity;
 import UMC.campusNote.image.Image;
 import UMC.campusNote.lessonNote.LessonNote;
 import UMC.campusNote.mapping.UserLessonNote;
-import UMC.campusNote.page.Page;
+import UMC.campusNote.page.entity.Page;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-package UMC.campusNote.page;
+package UMC.campusNote.page.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

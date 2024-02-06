@@ -1,10 +1,13 @@
-package UMC.campusNote.page;
+package UMC.campusNote.page.service;
 
 import UMC.campusNote.common.s3.S3Provider;
 import UMC.campusNote.common.s3.dto.S3UploadRequest;
-import UMC.campusNote.mapping.UserLessonNoteRepository;
 import UMC.campusNote.note.Note;
 import UMC.campusNote.note.NoteRepository;
+import UMC.campusNote.page.converter.PageConverter;
+import UMC.campusNote.page.repository.PageRepository;
+import UMC.campusNote.page.dto.PageRequestDTO;
+import UMC.campusNote.page.entity.Page;
 import UMC.campusNote.user.entity.User;
 import UMC.campusNote.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,22 +21,33 @@ import java.io.IOException;
 public class PageService {
    private final PageRepository pageRepository;
    private final NoteRepository noteRepository;
-   private final UserLessonNoteRepository userLessonNoteRepository;
    private final UserRepository userRepository;
    private final S3Provider s3Provider;
 
-   Page writePage(PageRequestDTO.PageDto request, MultipartFile file, Long userId) throws IOException {
+   public Page writePage(PageRequestDTO.PageDto request, MultipartFile file, Long userId) throws IOException {
       User user = userRepository.findById(userId).orElseThrow(()-> new RuntimeException());
       Note note = noteRepository.findById(request.getNoteId()).orElseThrow(()-> new RuntimeException());
-      Page newPage = PageConverter.toPage(request, note);
 
       String fileDir = "pages/" + request.getNoteId() + request.getPageNum();
 
       S3UploadRequest s3UploadRequest = new S3UploadRequest(user.getId(), fileDir);
       String imgUrl = s3Provider.fileUpload(file, s3UploadRequest);
-      newPage.setHandWritingSVG(imgUrl);
-      pageRepository.save(newPage);
-      return newPage;
+
+      // 이미 존재하는 페이지인지 확인
+      Page existingPage = pageRepository.findByNoteIdAndPageNumber(request.getNoteId(), request.getPageNum());
+      if (existingPage != null) { // 이미 존재
+         //페이지 업데이트
+         existingPage.setRound(request.getRound());
+         existingPage.setSideNote(request.getSideNote());
+         existingPage.setHandWritingSVG(imgUrl);
+         return pageRepository.save(existingPage);
+      } else{
+         // 새 페이지 생성
+         Page newPage = PageConverter.toPage(request, note);
+         newPage.setHandWritingSVG(imgUrl);
+         return pageRepository.save(newPage);
+      }
+
    }
 
 }
