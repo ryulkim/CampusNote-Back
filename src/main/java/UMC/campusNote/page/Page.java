@@ -3,13 +3,11 @@ package UMC.campusNote.page;
 import UMC.campusNote.common.BaseEntity;
 import UMC.campusNote.note.Note;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
