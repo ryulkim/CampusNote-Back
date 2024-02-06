@@ -71,7 +71,7 @@ jobs:
           touch ./docker-compose.yml
           echo "${{secrets.COMPOSE}}" > ./docker-compose.yml
           ## sudo docker rm -f $(sudo docker ps -qa)
-          sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_REPO_WEB }}
-          sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_REPO_NGINX }}
+          sudo docker pull ryulkim/umc-notation-web
+          sudo docker pull ryulkim/umc-notation-nginx
           sudo docker-compose up -d
           sudo docker image prune -f
