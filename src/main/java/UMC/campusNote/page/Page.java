@@ -21,6 +21,7 @@ public class Page extends BaseEntity {
     @JoinColumn(name = "NOTE_ID")
     private Note note;
 
+    @Lob
     private String handWritingSVG; // 필기 svg
 
     private Integer pageNumber; // 페이지 넘버
