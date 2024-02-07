@@ -29,4 +29,5 @@ public class Page extends BaseEntity {
     private String sideNote;
 
     private Integer round; // 회차
+
 }
