@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 import static UMC.campusNote.common.code.status.ErrorStatus.NOTE_NOT_FOUND;
 
 @Service
@@ -27,12 +29,22 @@ public class AudioServiceImpl implements AudioService {
     private final S3Provider s3Provider;
 
     @Override
+    public List<AudioResDto> getAudios(Long noteId) {
+        return audioRepository.findByNoteId(noteId).stream()
+                .map(audio -> AudioResDto.fromEntity(audio.getId(), audio.getAudioFile()))
+                .toList();
+    }
+
+    @Override
     public AudioResDto saveAudio(S3UploadRequest request, Long noteId, MultipartFile audioFile) {
         String url = s3Provider.multipartFileUpload(audioFile, request);
         Audio audio = Audio.builder()
                 .audioFile(url)
                 .build();
         audio.setNote(noteRepository.findById(noteId).orElseThrow(() -> new GeneralException(NOTE_NOT_FOUND)));
-        return AudioResDto.fromEntity(audioRepository.save(audio).getId()) ;
+        Audio saveAudio = audioRepository.save(audio);
+        return AudioResDto.fromEntity(saveAudio.getId(), saveAudio.getAudioFile()) ;
     }
+
+
 }

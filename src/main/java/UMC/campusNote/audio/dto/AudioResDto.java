@@ -8,7 +8,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import static UMC.campusNote.user.entity.Role.USER;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,9 +16,11 @@ import static UMC.campusNote.user.entity.Role.USER;
 public class AudioResDto {
 
     private Long audioId;
-    public static AudioResDto fromEntity(Long audioId){
+    private String audioFile;
+    public static AudioResDto fromEntity(Long audioId, String audioFile){
         return AudioResDto.builder()
                 .audioId(audioId)
+                .audioFile(audioFile)
                 .build();
     }
 }

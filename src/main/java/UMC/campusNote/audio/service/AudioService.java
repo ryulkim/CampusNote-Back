@@ -5,7 +5,11 @@ import UMC.campusNote.common.s3.dto.S3UploadRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Service
 public interface AudioService {
     AudioResDto saveAudio(S3UploadRequest request, Long noteId, MultipartFile audioFile);
+
+    List<AudioResDto> getAudios(Long noteId);
 }

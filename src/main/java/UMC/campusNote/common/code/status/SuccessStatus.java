@@ -28,7 +28,10 @@ public enum SuccessStatus implements BaseCode {
     ACCESS_TOKEN(HttpStatus.CREATED, "USER203", "토큰 재발급 성공"),
 
     // 오디오
-    AUDIO_CREATE(HttpStatus.CREATED, "AUDIO201", "오디오 생성 성공");
+    AUDIO_CREATE(HttpStatus.CREATED, "AUDIO201", "녹음 생성 성공"),
+    AUDIO_GET_ALL(HttpStatus.OK, "AUDIO200", "녹음 파일 전체 조회 성공"),
+    AUDIO_GET_ONE(HttpStatus.OK, "AUDIO200", "녹음 파일 조회 성공");
+
 
     private final HttpStatus httpStatus;
     private final String code;

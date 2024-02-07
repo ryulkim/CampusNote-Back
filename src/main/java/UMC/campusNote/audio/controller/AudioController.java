@@ -12,7 +12,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 import static UMC.campusNote.common.code.status.SuccessStatus.AUDIO_CREATE;
+import static UMC.campusNote.common.code.status.SuccessStatus.AUDIO_GET_ALL;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,6 +23,13 @@ import static UMC.campusNote.common.code.status.SuccessStatus.AUDIO_CREATE;
 public class AudioController {
 
     private final AudioService audioService;
+
+
+
+    @GetMapping("/{noteId}")
+    public ApiResponse<List<AudioResDto>> getAudios(@PathVariable("noteId") Long noteId) {
+        return ApiResponse.of(AUDIO_GET_ALL, audioService.getAudios(noteId));
+    }
 
     @PostMapping("/{noteId}")
     public ApiResponse<AudioResDto> uploadAudio(@AuthenticationPrincipal User user, @PathVariable("noteId") Long noteId, @RequestParam("audioFile") MultipartFile audioFile) {
