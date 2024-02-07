@@ -29,6 +29,12 @@ public class AudioServiceImpl implements AudioService {
     private final S3Provider s3Provider;
 
     @Override
+    public AudioResDto getAudio(Long audioId) {
+        Audio audio = audioRepository.findById(audioId).orElseThrow(() -> new GeneralException(NOTE_NOT_FOUND));
+        return AudioResDto.fromEntity(audio.getId(), audio.getAudioFile());
+    }
+
+    @Override
     public List<AudioResDto> getAudios(Long noteId) {
         return audioRepository.findByNoteId(noteId).stream()
                 .map(audio -> AudioResDto.fromEntity(audio.getId(), audio.getAudioFile()))
@@ -36,6 +42,7 @@ public class AudioServiceImpl implements AudioService {
     }
 
     @Override
+    @Transactional
     public AudioResDto saveAudio(S3UploadRequest request, Long noteId, MultipartFile audioFile) {
         String url = s3Provider.multipartFileUpload(audioFile, request);
         Audio audio = Audio.builder()

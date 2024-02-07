@@ -14,8 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-import static UMC.campusNote.common.code.status.SuccessStatus.AUDIO_CREATE;
-import static UMC.campusNote.common.code.status.SuccessStatus.AUDIO_GET_ALL;
+import static UMC.campusNote.common.code.status.SuccessStatus.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,6 +24,10 @@ public class AudioController {
     private final AudioService audioService;
 
 
+    @GetMapping("/{noteId}/{audioId}")
+    public ApiResponse<AudioResDto> getAudio(@PathVariable("noteId") Long noteId, @PathVariable("audioId") Long audioId) {
+        return ApiResponse.of(AUDIO_GET_ONE, audioService.getAudio(audioId));
+    }
 
     @GetMapping("/{noteId}")
     public ApiResponse<List<AudioResDto>> getAudios(@PathVariable("noteId") Long noteId) {

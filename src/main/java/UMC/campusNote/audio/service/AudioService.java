@@ -9,7 +9,12 @@ import java.util.List;
 
 @Service
 public interface AudioService {
-    AudioResDto saveAudio(S3UploadRequest request, Long noteId, MultipartFile audioFile);
+    AudioResDto getAudio(Long audioId);
 
     List<AudioResDto> getAudios(Long noteId);
+    AudioResDto saveAudio(S3UploadRequest request, Long noteId, MultipartFile audioFile);
+
+
+
+
 }
