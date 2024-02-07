@@ -1,4 +1,4 @@
-package UMC.campusNote.audio;
+package UMC.campusNote.audio.entity;
 
 import UMC.campusNote.common.BaseEntity;
 import UMC.campusNote.note.Note;
@@ -24,4 +24,9 @@ public class Audio extends BaseEntity {
     private Note note;
 
     private String audioFile; // 녹음한 오디오 파일
+
+    public void setNote(Note note) {
+        this.note = note;
+        note.getAudioList().add(this);
+    }
 }

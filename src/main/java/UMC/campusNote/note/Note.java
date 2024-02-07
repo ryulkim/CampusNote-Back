@@ -1,6 +1,6 @@
 package UMC.campusNote.note;
 
-import UMC.campusNote.audio.Audio;
+import UMC.campusNote.audio.entity.Audio;
 import UMC.campusNote.common.BaseEntity;
 import UMC.campusNote.image.Image;
 import UMC.campusNote.lessonNote.LessonNote;
@@ -48,4 +48,5 @@ public class Note extends BaseEntity {
     @OneToMany(mappedBy = "note", cascade = CascadeType.ALL)
     @Builder.Default
     private List<Audio> audioList = new ArrayList<>();
+
 }
