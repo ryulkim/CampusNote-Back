@@ -53,5 +53,13 @@ public class AudioServiceImpl implements AudioService {
         return AudioResDto.fromEntity(saveAudio.getId(), saveAudio.getAudioFile()) ;
     }
 
+    @Override
+    @Transactional
+    public AudioResDto deleteAudio(Long audioId) {
+        Audio audio = audioRepository.findById(audioId).orElseThrow(() -> new GeneralException(NOTE_NOT_FOUND));
+        audioRepository.delete(audio);
+        return AudioResDto.fromEntity(audio.getId(), null);
+    }
+
 
 }

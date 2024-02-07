@@ -38,4 +38,9 @@ public class AudioController {
     public ApiResponse<AudioResDto> uploadAudio(@AuthenticationPrincipal User user, @PathVariable("noteId") Long noteId, @RequestParam("audioFile") MultipartFile audioFile) {
         return ApiResponse.of(AUDIO_CREATE, audioService.saveAudio(new S3UploadRequest(user.getId(), "audios"), noteId, audioFile));
     }
+
+    @DeleteMapping("/{audioId}")
+    public ApiResponse<AudioResDto> deleteAudio(@PathVariable("audioId") Long audioId) {
+        return ApiResponse.of(AUDIO_DELETE, audioService.deleteAudio(audioId));
+    }
 }

@@ -15,6 +15,5 @@ public interface AudioService {
     AudioResDto saveAudio(S3UploadRequest request, Long noteId, MultipartFile audioFile);
 
 
-
-
+    AudioResDto deleteAudio(Long audioId);
 }
