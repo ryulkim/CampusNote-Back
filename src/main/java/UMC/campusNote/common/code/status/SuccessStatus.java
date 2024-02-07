@@ -25,7 +25,10 @@ public enum SuccessStatus implements BaseCode {
     USER_LOGIN(HttpStatus.OK, "USER201", "로그인 성공"),
     USER_LOGOUT(HttpStatus.OK, "USER202", "로그아웃 성공"),
 
-    ACCESS_TOKEN(HttpStatus.CREATED, "USER203", "토큰 재발급 성공");
+    ACCESS_TOKEN(HttpStatus.CREATED, "USER203", "토큰 재발급 성공"),
+
+    // 오디오
+    AUDIO_CREATE(HttpStatus.CREATED, "AUDIO201", "오디오 생성 성공");
 
     private final HttpStatus httpStatus;
     private final String code;
