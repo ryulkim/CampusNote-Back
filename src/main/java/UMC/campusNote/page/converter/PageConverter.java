@@ -7,6 +7,8 @@ import UMC.campusNote.page.entity.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class PageConverter {
@@ -25,4 +27,6 @@ public class PageConverter {
                 .round(request.getRound())
                 .build();
     }
+
+
 }

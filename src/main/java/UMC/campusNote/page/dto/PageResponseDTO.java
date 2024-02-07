@@ -1,5 +1,7 @@
 package UMC.campusNote.page.dto;
 
+import UMC.campusNote.note.Note;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,5 +15,16 @@ public class PageResponseDTO {
     public static class pageResultDTO{
         Long noteId;
         Long pageId;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class GetpageResultDTO{
+        Long pageId;
+        String handWritingSVG;
+        Integer pageNumber;
+        String sideNote;
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,6 +29,12 @@ public class PageController {
     public ApiResponse<PageResponseDTO.pageResultDTO> write(@AuthenticationPrincipal User user, @RequestPart("request") PageRequestDTO.PageDto request, @RequestPart("image") MultipartFile image) throws IOException {
         Page newPage = pageService.writePage(request, image, user.getId());
         return ApiResponse.onSuccess(PageConverter.toPageResultDTO(newPage));
+    }
+
+    @Operation(summary = "노트아이디로 페이지 조회 API", description = "pathVariable로 noteId")
+    @GetMapping("/{noteId}")
+    public ApiResponse<List<PageResponseDTO.GetpageResultDTO>> getPages(@PathVariable Long noteId) throws IOException {
+        return ApiResponse.onSuccess(pageService.getPagesOfNote(noteId));
     }
 
 }

@@ -5,6 +5,7 @@ import UMC.campusNote.common.s3.dto.S3UploadRequest;
 import UMC.campusNote.note.Note;
 import UMC.campusNote.note.NoteRepository;
 import UMC.campusNote.page.converter.PageConverter;
+import UMC.campusNote.page.dto.PageResponseDTO;
 import UMC.campusNote.page.repository.PageRepository;
 import UMC.campusNote.page.dto.PageRequestDTO;
 import UMC.campusNote.page.entity.Page;
@@ -15,6 +16,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -47,7 +51,15 @@ public class PageService {
          newPage.setHandWritingSVG(imgUrl);
          return pageRepository.save(newPage);
       }
+   }
 
+   public List<PageResponseDTO.GetpageResultDTO> getPagesOfNote(Long noteId) throws IOException{
+      List<Page> pageList = pageRepository.findAllByNoteId(noteId);
+      List<PageResponseDTO.GetpageResultDTO> getPageRes = pageList.stream()
+              .map(pages -> new PageResponseDTO.GetpageResultDTO(pages.getId(), pages.getHandWritingSVG(), pages.getPageNumber(), pages.getSideNote()))
+              .sorted(Comparator.comparingInt(PageResponseDTO.GetpageResultDTO::getPageNumber)) // 페이지 번호로 정렬
+              .collect(Collectors.toList());
+      return getPageRes;
    }
 
 }
