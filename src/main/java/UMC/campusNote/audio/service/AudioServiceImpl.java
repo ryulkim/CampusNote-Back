@@ -10,6 +10,8 @@ import UMC.campusNote.common.s3.dto.S3UploadRequest;
 import UMC.campusNote.note.NoteRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,10 +37,11 @@ public class AudioServiceImpl implements AudioService {
     }
 
     @Override
-    public List<AudioResDto> getAudios(Long noteId) {
-        return audioRepository.findByNoteId(noteId).stream()
+    public Slice<AudioResDto> getAudios(Long noteId) {
+        List<AudioResDto> audioResDtos = audioRepository.findByNoteId(noteId).stream()
                 .map(audio -> AudioResDto.fromEntity(audio.getId(), audio.getAudioFile()))
                 .toList();
+        return new SliceImpl<>(audioResDtos);
     }
 
     @Override
