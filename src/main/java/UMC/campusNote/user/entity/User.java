@@ -1,7 +1,7 @@
 package UMC.campusNote.user.entity;
 
 import UMC.campusNote.common.BaseEntity;
-import UMC.campusNote.friend.Friend;
+import UMC.campusNote.friend.entity.Friend;
 import UMC.campusNote.mapping.UserLesson;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -30,7 +30,6 @@ public class User extends BaseEntity implements UserDetails {
 
     @Column(length = 100)
     private String clientId;
-
 
     @Column(length = 20)
     private String name;
