@@ -4,7 +4,6 @@ import UMC.campusNote.common.exception.GeneralException;
 import UMC.campusNote.common.s3.S3Provider;
 import UMC.campusNote.common.s3.dto.S3UploadRequest;
 import UMC.campusNote.lessonNote.converter.LessonNoteConverter;
-import UMC.campusNote.lessonNote.dto.LessonNoteRequestDTO;
 import UMC.campusNote.lessonNote.entity.LessonNote;
 import UMC.campusNote.lessonNote.repository.LessonNoteRepository;
 import UMC.campusNote.note.Note;
@@ -27,17 +26,17 @@ public class LessonNoteService {
     private final UserRepository userRepository;
     private final S3Provider s3Provider;
 
-    public LessonNote createLessonNote(LessonNoteRequestDTO.LessonNoteDTO request, MultipartFile file, Long userId) throws IOException {
+    public LessonNote createLessonNote(Long noteId, MultipartFile file, Long userId) throws IOException {
         User user = userRepository.findById(userId).orElseThrow(()-> new RuntimeException());
-        Note note = noteRepository.findById(request.getNoteId()).orElseThrow(()->  new GeneralException(NOTE_NOT_FOUND));
+        Note note = noteRepository.findById(noteId).orElseThrow(()->  new GeneralException(NOTE_NOT_FOUND));
 
 
-        String fileDir = "lessonNotes/" + request.getNoteId();
+        String fileDir = "lessonNotes/" + noteId;
 
         S3UploadRequest s3UploadRequest = new S3UploadRequest(user.getId(), fileDir);
         String imgUrl = s3Provider.fileUpload(file, s3UploadRequest);
 
-        LessonNote existLessonNote = lessonNoteRepository.findByNoteId(request.getNoteId());
+        LessonNote existLessonNote = lessonNoteRepository.findByNoteId(noteId);
         if (existLessonNote != null){ // 이미 존재
             // 강노 업데이트
             existLessonNote.setLessonNote(imgUrl);
@@ -47,6 +46,15 @@ public class LessonNoteService {
             LessonNote newLessonNote = LessonNoteConverter.toLessonNote(note);
             newLessonNote.setLessonNote(imgUrl);
             return lessonNoteRepository.save(newLessonNote);
+        }
+    }
+
+    public LessonNote getLessonNoteByNoteId(Long noteId) throws GeneralException {
+        LessonNote lessonNote = lessonNoteRepository.findByNoteId(noteId);
+        if (lessonNote == null) {
+            throw new GeneralException(NOTE_NOT_FOUND);
+        } else {
+            return lessonNote;
         }
     }
 }

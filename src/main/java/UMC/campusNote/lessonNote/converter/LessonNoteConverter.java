@@ -1,9 +1,7 @@
 package UMC.campusNote.lessonNote.converter;
 
-import UMC.campusNote.lessonNote.dto.LessonNoteRequestDTO;
 import UMC.campusNote.lessonNote.dto.LessonNoteResponseDTO;
 import UMC.campusNote.lessonNote.entity.LessonNote;
-import UMC.campusNote.lessonNote.repository.LessonNoteRepository;
 import UMC.campusNote.note.Note;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -15,6 +13,7 @@ public class LessonNoteConverter {
         return LessonNoteResponseDTO.lessonNoteResultDTO.builder()
                 .lessonNoteId(lessonNote.getId())
                 .noteId(lessonNote.getNote().getId())
+                .fileUrl(lessonNote.getLessonNote())
                 .build();
     }
 

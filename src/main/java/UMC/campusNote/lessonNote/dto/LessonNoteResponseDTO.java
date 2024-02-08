@@ -13,5 +13,6 @@ public class LessonNoteResponseDTO {
     public static class lessonNoteResultDTO{
         Long lessonNoteId;
         Long noteId;
+        String fileUrl;
     }
 }

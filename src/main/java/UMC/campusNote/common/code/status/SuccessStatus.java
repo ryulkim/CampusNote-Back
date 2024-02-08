@@ -34,7 +34,9 @@ public enum SuccessStatus implements BaseCode {
     AUDIO_DELETE(HttpStatus.OK, "AUDIO202", "녹음 파일 삭제 성공"),
 
     // 강의노트
-    LESSONNOTE_CREATE(HttpStatus.CREATED, "LESSONNOTE201", "강의노트 업로드 성공");
+    LESSONNOTE_CREATE(HttpStatus.CREATED, "LESSONNOTE201", "강의 노트 업로드 성공"),
+    LESSONNOTE_GET(HttpStatus.OK, "LESSONNOTE200", "강의 노트 조회 성공"),
+    LESSONNOTE_DELETE(HttpStatus.OK, "LESSONNOTE202", "강의 노트 삭제 성공");
 
 
     private final HttpStatus httpStatus;
