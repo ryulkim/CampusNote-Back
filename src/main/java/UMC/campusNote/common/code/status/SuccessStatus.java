@@ -31,7 +31,10 @@ public enum SuccessStatus implements BaseCode {
     AUDIO_CREATE(HttpStatus.CREATED, "AUDIO201", "녹음 생성 성공"),
     AUDIO_GET_ALL(HttpStatus.OK, "AUDIO200", "녹음 파일 전체 조회 성공"),
     AUDIO_GET_ONE(HttpStatus.OK, "AUDIO200", "녹음 파일 조회 성공"),
-    AUDIO_DELETE(HttpStatus.OK, "AUDIO202", "녹음 파일 삭제 성공");
+    AUDIO_DELETE(HttpStatus.OK, "AUDIO202", "녹음 파일 삭제 성공"),
+
+    // 강의노트
+    LESSONNOTE_CREATE(HttpStatus.CREATED, "LESSONNOTE201", "강의노트 업로드 성공");
 
 
     private final HttpStatus httpStatus;
