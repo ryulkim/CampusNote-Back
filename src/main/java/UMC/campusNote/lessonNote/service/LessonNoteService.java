@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
+import static UMC.campusNote.common.code.status.ErrorStatus.LESSONNOTE_NOT_FOUND;
 import static UMC.campusNote.common.code.status.ErrorStatus.NOTE_NOT_FOUND;
 
 @Service
@@ -50,10 +51,22 @@ public class LessonNoteService {
     }
 
     public LessonNote getLessonNoteByNoteId(Long noteId) throws GeneralException {
+        Note note = noteRepository.findById(noteId).orElseThrow(()-> new GeneralException(NOTE_NOT_FOUND));
         LessonNote lessonNote = lessonNoteRepository.findByNoteId(noteId);
         if (lessonNote == null) {
-            throw new GeneralException(NOTE_NOT_FOUND);
+            throw new GeneralException(LESSONNOTE_NOT_FOUND);
         } else {
+            return lessonNote;
+        }
+    }
+
+    public LessonNote deleteLessonNoteByNoteId(Long noteId) throws GeneralException {
+        Note note = noteRepository.findById(noteId).orElseThrow(()-> new GeneralException(NOTE_NOT_FOUND));
+        LessonNote lessonNote = lessonNoteRepository.findByNoteId(noteId);
+        if (lessonNote == null) {
+            throw new GeneralException(LESSONNOTE_NOT_FOUND);
+        } else {
+            lessonNoteRepository.delete(lessonNote);
             return lessonNote;
         }
     }

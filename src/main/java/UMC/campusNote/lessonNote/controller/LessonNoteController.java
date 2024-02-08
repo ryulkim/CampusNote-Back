@@ -19,8 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
-import static UMC.campusNote.common.code.status.SuccessStatus.LESSONNOTE_CREATE;
-import static UMC.campusNote.common.code.status.SuccessStatus.LESSONNOTE_GET;
+import static UMC.campusNote.common.code.status.SuccessStatus.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -47,6 +46,7 @@ public class LessonNoteController {
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "LESSONNOTE200",description = "강의 노트 조회 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "NOTE4001", description = "존재하지 않는 노트.",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "LESSONNOTE4001", description = "존재하지 않는 강의 노트.",content = @Content(schema = @Schema(implementation = ApiResponse.class)))
     })
     @Parameters({
             @Parameter(name = "noteId", description = "노트의 아이디, path variable 입니다")
@@ -55,6 +55,22 @@ public class LessonNoteController {
         LessonNote lessonNote = lessonNoteService.getLessonNoteByNoteId(noteId);
         return ApiResponse.of(LESSONNOTE_GET, LessonNoteConverter.toLessonNoteResultDTO(lessonNote));
     }
+
+    @DeleteMapping("/{noteId}")
+    @Operation(summary = "특정 노트의 강의 노트를 삭제하는 API", description = "특정 노트의 강의 노트를 삭제하는 API")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "LESSONNOTE200",description = "강의 노트 조회 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "NOTE4001", description = "존재하지 않는 노트.",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "LESSONNOTE4001", description = "존재하지 않는 강의 노트.",content = @Content(schema = @Schema(implementation = ApiResponse.class)))
+    })
+    @Parameters({
+            @Parameter(name = "noteId", description = "노트의 아이디, path variable 입니다")
+    })
+    public ApiResponse<LessonNoteResponseDTO.lessonNoteResultDTO> deleteLessonNotes(@PathVariable Long noteId) throws IOException {
+        LessonNote lessonNote = lessonNoteService.deleteLessonNoteByNoteId(noteId);
+        return ApiResponse.of(LESSONNOTE_DELETE, LessonNoteConverter.toLessonNoteResultDTO(lessonNote));
+    }
+
 
 
 
