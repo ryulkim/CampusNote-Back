@@ -1,15 +1,13 @@
-package UMC.campusNote.page;
+package UMC.campusNote.page.entity;
 
 import UMC.campusNote.common.BaseEntity;
 import UMC.campusNote.note.Note;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,6 +21,7 @@ public class Page extends BaseEntity {
     @JoinColumn(name = "NOTE_ID")
     private Note note;
 
+    @Lob
     private String handWritingSVG; // 필기 svg
 
     private Integer pageNumber; // 페이지 넘버
@@ -30,4 +29,5 @@ public class Page extends BaseEntity {
     private String sideNote;
 
     private Integer round; // 회차
+
 }
