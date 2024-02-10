@@ -1,8 +1,5 @@
 package UMC.campusNote.audio.dto;
 
-import UMC.campusNote.audio.entity.Audio;
-import UMC.campusNote.auth.dto.JoinResDto;
-import UMC.campusNote.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
