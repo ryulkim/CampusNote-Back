@@ -21,17 +21,17 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signUp")
-    public ApiResponse<JoinResDto> join(@RequestBody @Valid JoinReqDto joinReqDto){
+    public ApiResponse<AuthResponseDTO.JoinResDto> join(@RequestBody @Valid AuthRequestDTO.JoinReqDto joinReqDto){
         return ApiResponse.of(USER_JOIN, authService.join(joinReqDto));
     }
 
     @PostMapping("/login")
-    public ApiResponse<LoginResDto> login(@RequestBody @Valid LoginReqDto loginReqDto){
+    public ApiResponse<AuthResponseDTO.LoginResDto> login(@RequestBody @Valid AuthRequestDTO.LoginReqDto loginReqDto){
         return ApiResponse.of(USER_LOGIN, authService.login(loginReqDto));
     }
 
     @PostMapping("/refresh-token")
-    public ApiResponse<RefreshResDto> refreshToken(HttpServletRequest request, HttpServletResponse response)  {
+    public ApiResponse<AuthResponseDTO.RefreshResDto> refreshToken(HttpServletRequest request, HttpServletResponse response)  {
         return ApiResponse.of(ACCESS_TOKEN, authService.refreshToken(request, response));
     }
 
