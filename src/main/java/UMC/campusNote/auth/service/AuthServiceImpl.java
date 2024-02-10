@@ -1,5 +1,6 @@
 package UMC.campusNote.auth.service;
 
+import UMC.campusNote.auth.converter.AuthConverter;
 import UMC.campusNote.auth.dto.*;
 import UMC.campusNote.auth.jwt.JwtProvider;
 import UMC.campusNote.auth.redis.RedisProvider;
@@ -30,22 +31,22 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional
-    public JoinResDto join(JoinReqDto joinReqDto) {
+    public AuthResponseDTO.JoinResDto join(AuthRequestDTO.JoinReqDto joinReqDto) {
         userRepository.findByClientId(joinReqDto.getClientId())
                 .ifPresent( user -> {
                     throw new GeneralException(USER_ALREADY_EXIST);
                 });
-        User user = joinReqDto.toEntity();
+        User user = AuthConverter.toUser(joinReqDto);
         User savedUser = userRepository.save(user);
         String accessToken = jwtProvider.generateToken(user);
         String refreshToken = jwtProvider.generateRefreshToken(user);
         saveUserToken(savedUser, refreshToken);
-        return JoinResDto.fromEntity(savedUser.getId(), accessToken, refreshToken);
+        return AuthConverter.toJoinResDto(savedUser.getId(), accessToken, refreshToken);
     }
 
     @Override
     @Transactional
-    public LoginResDto login(LoginReqDto loginReqDto) {
+    public AuthResponseDTO.LoginResDto login(AuthRequestDTO.LoginReqDto loginReqDto) {
         //log.info("loginReqDto.getClientId() : {}", loginReqDto.getClientId());
         User user = userRepository.findByClientId(loginReqDto.getClientId())
                 .orElseThrow(() -> new GeneralException(USER_NOT_FOUND));
@@ -53,11 +54,11 @@ public class AuthServiceImpl implements AuthService {
         String refreshToken = jwtProvider.generateRefreshToken(user);
         revokeAllUserTokens(user);
         saveUserToken(user, refreshToken);
-        return LoginResDto.fromEntity(user.getId(), accessToken, refreshToken);
+        return AuthConverter.toLoginResDto(user.getId(), accessToken, refreshToken);
     }
 
     @Override
-    public RefreshResDto refreshToken(HttpServletRequest request, HttpServletResponse response) {
+    public AuthResponseDTO.RefreshResDto refreshToken(HttpServletRequest request, HttpServletResponse response) {
         final String authHeader = request.getHeader(HEADER_AUTHORIZATION);
         final String refreshToken;
         final String userEmail;
@@ -70,7 +71,7 @@ public class AuthServiceImpl implements AuthService {
                     .orElseThrow(() -> new GeneralException(USER_NOT_FOUND));
             if (jwtProvider.isTokenValid(refreshToken, user)) {
                 String accessToken = jwtProvider.generateToken(user);
-                return RefreshResDto.fromEntity(accessToken);
+                return AuthConverter.toRefreshResDto(accessToken);
             }
         }
         return null;
