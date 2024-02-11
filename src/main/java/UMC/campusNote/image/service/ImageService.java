@@ -54,24 +54,41 @@ public class ImageService {
         return getImageRes;
     }
 
-    public Image getOneImageOfNote(Long noteId, Long imageId) throws GeneralException{
+    public ImageResponseDTO.GetImageResultDTO getOneImageOfNote(Long noteId, Long imageId) throws GeneralException{
         Note note = noteRepository.findById(noteId).orElseThrow(()-> new GeneralException(NOTE_NOT_FOUND));
         Image image = imageRepository.findByIdAndNoteId(imageId, noteId);
         if (image == null){
             throw new GeneralException(IMAGE_NOT_FOUND);
         }
-        return image;
+        return ImageConverter.toGetImageResultDTO(image);
     }
 
-//    public Image deleteImage(Long noteId, Long imageId) throws GeneralException{
-//        Note note = noteRepository.findById(noteId).orElseThrow(()-> new GeneralException(NOTE_NOT_FOUND));
-//        Image image = imageRepository.findByNoteIdAndImageId(noteId, imageId);
-//        if (image == null){
-//            throw new GeneralException(IMAGE_NOT_FOUND);
-//        }else{
-//            imageRepository.delete(image);
-//            return image;
-//        }
-//    }
+    public List<ImageResponseDTO.GetImageResultDTO> deleteImageOfNote(Long noteId) throws GeneralException{
+        Note note = noteRepository.findById(noteId).orElseThrow(()-> new GeneralException(NOTE_NOT_FOUND));
+        List<Image> imageList = imageRepository.findAllByNoteId(noteId);
+        if (imageList.size() < 1){
+            throw new GeneralException(IMAGE_NOT_FOUND);
+        }
+        List<ImageResponseDTO.GetImageResultDTO> deleteImageRes = imageList.stream()
+                .map(images -> new ImageResponseDTO.GetImageResultDTO(images.getId(), images.getImg()))
+                .collect(Collectors.toList());
+
+        imageRepository.deleteAllByNoteId(noteId);
+
+        return deleteImageRes;
+
+    }
+
+    public ImageResponseDTO.GetImageResultDTO deleteOneImageOfNote(Long noteId, Long imageId) throws GeneralException{
+        Note note = noteRepository.findById(noteId).orElseThrow(()-> new GeneralException(NOTE_NOT_FOUND));
+        Image image = imageRepository.findByIdAndNoteId(imageId, noteId);
+        if (image == null){
+            throw new GeneralException(IMAGE_NOT_FOUND);
+        }
+
+        imageRepository.delete(image);
+        return ImageConverter.toGetImageResultDTO(image);
+
+    }
 
 }

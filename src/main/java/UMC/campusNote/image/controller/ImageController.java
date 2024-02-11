@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -46,7 +47,6 @@ public class ImageController {
         return ApiResponse.of(IMAGE_CREATE, ImageConverter.toImageResultDTO(newImage));
     }
 
-    // 노트의 모든 이미지 조회
     @GetMapping("/{noteId}")
     @Operation(summary = "특정 노트의 모든 이미지를 조회하는 API", description = "특정 노트의 모든 이미지를 조회하는 API")
     @ApiResponses({
@@ -62,7 +62,6 @@ public class ImageController {
     }
 
 
-    // 노트의 특정 이미지 조회
     @GetMapping("/{noteId}/{imageId}")
     @Operation(summary = "특정 노트의 특정 이미지를 조회하는 API", description = "특정 노트의 특정 이미지를 조회하는 API")
     @ApiResponses({
@@ -74,9 +73,38 @@ public class ImageController {
             @Parameter(name = "noteId", description = "노트의 아이디, path variable 입니다"),
             @Parameter(name = "imageId", description = "이미지의 아이디, path variable 입니다")
     })
-    public ApiResponse<ImageResponseDTO.CreateImageResultDTO> getImageOne(@PathVariable Long noteId, @PathVariable Long imageId) throws IOException{
-        Image image = imageService.getOneImageOfNote(noteId, imageId);
-        return ApiResponse.of(IMAGE_GET_ONE, ImageConverter.toImageResultDTO(image));
+    public ApiResponse<ImageResponseDTO.GetImageResultDTO> getImageOne(@PathVariable Long noteId, @PathVariable Long imageId) throws IOException{
+        return ApiResponse.of(IMAGE_GET_ONE, imageService.getOneImageOfNote(noteId, imageId));
     }
-    // 노트의 모든 이미지 삭제, 노트의 특정 이미지 삭제
+
+    @Transactional
+    @DeleteMapping("/{noteId}")
+    @Operation(summary = "특정 노트의 모든 이미지를 삭제하는 API", description = "특정 노트의 모든 이미지를 삭제하는 API")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "IMAGE202",description = "노트의 모든 이미지 삭제 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "NOTE4001", description = "존재하지 않는 노트.",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "IMAGE4001", description = "존재하지 않는 이미지.",content = @Content(schema = @Schema(implementation = ApiResponse.class)))
+    })
+    @Parameters({
+            @Parameter(name = "noteId", description = "노트의 아이디, path variable 입니다")
+    })
+    public ApiResponse<List<ImageResponseDTO.GetImageResultDTO>> deleteImages(@PathVariable Long noteId) throws IOException{
+        return ApiResponse.of(IMAGE_DELETE_ALL, imageService.deleteImageOfNote(noteId));
+    }
+
+    @Transactional
+    @DeleteMapping("/{noteId}/{imageId}")
+    @Operation(summary = "특정 노트의 특정 이미지를 삭제하는 API", description = "특정 노트의 특정 이미지를 삭제하는 API")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "IMAGE202",description = "노트의 특정 이미지 삭제 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "NOTE4001", description = "존재하지 않는 노트.",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "IMAGE4001", description = "존재하지 않는 이미지.",content = @Content(schema = @Schema(implementation = ApiResponse.class)))
+    })
+    @Parameters({
+            @Parameter(name = "noteId", description = "노트의 아이디, path variable 입니다"),
+            @Parameter(name = "imageId", description = "이미지의 아이디, path variable 입니다")
+    })
+    public ApiResponse<ImageResponseDTO.GetImageResultDTO> deleteOneImage(@PathVariable Long noteId, @PathVariable Long imageId) throws IOException{
+        return ApiResponse.of(IMAGE_DELETE_ONE, imageService.deleteOneImageOfNote(noteId, imageId));
+    }
 }

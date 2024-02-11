@@ -18,6 +18,13 @@ public class ImageConverter {
 
     }
 
+    public static ImageResponseDTO.GetImageResultDTO toGetImageResultDTO(Image image){
+        return ImageResponseDTO.GetImageResultDTO.builder()
+                .imageId(image.getId())
+                .imgUrl(image.getImg())
+                .build();
+    }
+
     public static Image toImage(Note note){
         return Image.builder()
                 .note(note)

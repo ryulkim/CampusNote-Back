@@ -10,4 +10,5 @@ import java.util.List;
 public interface ImageRepository extends JpaRepository<Image, Long> {
     List<Image> findAllByNoteId(Long noteId);
     Image findByIdAndNoteId(Long imageId, Long noteId);
+    void deleteAllByNoteId(Long noteId);
 }
