@@ -7,7 +7,8 @@ import UMC.campusNote.user.entity.User;
 import static UMC.campusNote.user.entity.Role.USER;
 
 public class AuthConverter {
-    public static AuthResponseDTO.JoinResDTO toJoinResDto(Long userId, String accesstoken, String refreshtoken){
+
+    public static AuthResponseDTO.JoinResDTO toJoinResDTO(Long userId, String accesstoken, String refreshtoken){
         return AuthResponseDTO.JoinResDTO.builder()
                 .userId(userId)
                 .accesstoken(accesstoken)
@@ -15,8 +16,7 @@ public class AuthConverter {
                 .build();
     }
 
-
-    public static AuthResponseDTO.LoginResDTO toLoginResDto(Long userId, String accessToken, String refreshToken){
+    public static AuthResponseDTO.LoginResDTO toLoginResDTO(Long userId, String accessToken, String refreshToken){
         return AuthResponseDTO.LoginResDTO.builder()
                 .userId(userId)
                 .accessToken(accessToken)
@@ -24,7 +24,7 @@ public class AuthConverter {
                 .build();
     }
 
-    public static AuthResponseDTO.RefreshResDTO toRefreshResDto(String accessToken){
+    public static AuthResponseDTO.RefreshResDTO toRefreshResDTO(String accessToken){
         return AuthResponseDTO.RefreshResDTO.builder()
                 .accessToken(accessToken)
                 .build();
