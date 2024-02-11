@@ -41,7 +41,7 @@ public class AuthServiceImpl implements AuthService {
         String accessToken = jwtProvider.generateToken(user);
         String refreshToken = jwtProvider.generateRefreshToken(user);
         saveUserToken(savedUser, refreshToken);
-        return AuthConverter.toJoinResDto(savedUser.getId(), accessToken, refreshToken);
+        return AuthConverter.toJoinResDTO(savedUser.getId(), accessToken, refreshToken);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class AuthServiceImpl implements AuthService {
         String refreshToken = jwtProvider.generateRefreshToken(user);
         revokeAllUserTokens(user);
         saveUserToken(user, refreshToken);
-        return AuthConverter.toLoginResDto(user.getId(), accessToken, refreshToken);
+        return AuthConverter.toLoginResDTO(user.getId(), accessToken, refreshToken);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class AuthServiceImpl implements AuthService {
                     .orElseThrow(() -> new GeneralException(USER_NOT_FOUND));
             if (jwtProvider.isTokenValid(refreshToken, user)) {
                 String accessToken = jwtProvider.generateToken(user);
-                return AuthConverter.toRefreshResDto(accessToken);
+                return AuthConverter.toRefreshResDTO(accessToken);
             }
         }
         return null;
