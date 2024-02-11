@@ -21,15 +21,16 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
-import static UMC.campusNote.common.code.status.SuccessStatus.IMAGE_CREATE;
-import static UMC.campusNote.common.code.status.SuccessStatus.LESSONNOTE_CREATE;
+import static UMC.campusNote.common.code.status.SuccessStatus.*;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/images")
 public class ImageController {
     private final ImageService imageService;
+
     @PostMapping("/{noteId}")
     @Operation(summary = "이미지 등록 API", description = "특정 노트와 관련된 이미지를 등록하는 API ")
     @ApiResponses({
@@ -44,4 +45,38 @@ public class ImageController {
         Image newImage = imageService.createImage(noteId, imageFile, user.getId());
         return ApiResponse.of(IMAGE_CREATE, ImageConverter.toImageResultDTO(newImage));
     }
+
+    // 노트의 모든 이미지 조회
+    @GetMapping("/{noteId}")
+    @Operation(summary = "특정 노트의 모든 이미지를 조회하는 API", description = "특정 노트의 모든 이미지를 조회하는 API")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "IMAGE200",description = "이미지 조회 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "NOTE4001", description = "존재하지 않는 노트.",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "IMAGE4001", description = "존재하지 않는 이미지.",content = @Content(schema = @Schema(implementation = ApiResponse.class)))
+    })
+    @Parameters({
+            @Parameter(name = "noteId", description = "노트의 아이디, path variable 입니다")
+    })
+    public ApiResponse<List<ImageResponseDTO.GetImageResultDTO>> getImages(@PathVariable Long noteId) throws IOException{
+        return ApiResponse.of(IMAGE_GET_ALL, imageService.getImageOfNote(noteId));
+    }
+
+
+    // 노트의 특정 이미지 조회
+    @GetMapping("/{noteId}/{imageId}")
+    @Operation(summary = "특정 노트의 특정 이미지를 조회하는 API", description = "특정 노트의 특정 이미지를 조회하는 API")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "IMAGE200",description = "이미지 조회 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "NOTE4001", description = "존재하지 않는 노트.",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "IMAGE4001", description = "존재하지 않는 이미지.",content = @Content(schema = @Schema(implementation = ApiResponse.class)))
+    })
+    @Parameters({
+            @Parameter(name = "noteId", description = "노트의 아이디, path variable 입니다"),
+            @Parameter(name = "imageId", description = "이미지의 아이디, path variable 입니다")
+    })
+    public ApiResponse<ImageResponseDTO.CreateImageResultDTO> getImageOne(@PathVariable Long noteId, @PathVariable Long imageId) throws IOException{
+        Image image = imageService.getOneImageOfNote(noteId, imageId);
+        return ApiResponse.of(IMAGE_GET_ONE, ImageConverter.toImageResultDTO(image));
+    }
+    // 노트의 모든 이미지 삭제, 노트의 특정 이미지 삭제
 }

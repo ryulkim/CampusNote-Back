@@ -19,8 +19,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static UMC.campusNote.common.code.status.ErrorStatus.IMAGE_NOT_FOUND;
-import static UMC.campusNote.common.code.status.ErrorStatus.NOTE_NOT_FOUND;
+import static UMC.campusNote.common.code.status.ErrorStatus.*;
 
 @Service
 @RequiredArgsConstructor
@@ -44,12 +43,24 @@ public class ImageService {
 
     }
 
-    public List<ImageResponseDTO.GetImageResultDTO> getImageOfNote(Long noteId) throws IOException{
+    public List<ImageResponseDTO.GetImageResultDTO> getImageOfNote(Long noteId) throws GeneralException{
         List<Image> imageList = imageRepository.findAllByNoteId(noteId);
         List<ImageResponseDTO.GetImageResultDTO> getImageRes = imageList.stream()
                 .map(images -> new ImageResponseDTO.GetImageResultDTO(images.getId(), images.getImg()))
                 .collect(Collectors.toList());
+        if (getImageRes.size() < 1){
+            throw new GeneralException(IMAGE_NOT_FOUND);
+        }
         return getImageRes;
+    }
+
+    public Image getOneImageOfNote(Long noteId, Long imageId) throws GeneralException{
+        Note note = noteRepository.findById(noteId).orElseThrow(()-> new GeneralException(NOTE_NOT_FOUND));
+        Image image = imageRepository.findByIdAndNoteId(imageId, noteId);
+        if (image == null){
+            throw new GeneralException(IMAGE_NOT_FOUND);
+        }
+        return image;
     }
 
 //    public Image deleteImage(Long noteId, Long imageId) throws GeneralException{
