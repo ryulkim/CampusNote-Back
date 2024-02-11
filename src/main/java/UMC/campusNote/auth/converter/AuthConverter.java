@@ -7,29 +7,30 @@ import UMC.campusNote.user.entity.User;
 import static UMC.campusNote.user.entity.Role.USER;
 
 public class AuthConverter {
-    public static AuthResponseDTO.JoinResDto toJoinResDto(Long userId, String accesstoken, String refreshtoken){
-        return AuthResponseDTO.JoinResDto.builder()
+    public static AuthResponseDTO.JoinResDTO toJoinResDto(Long userId, String accesstoken, String refreshtoken){
+        return AuthResponseDTO.JoinResDTO.builder()
                 .userId(userId)
                 .accesstoken(accesstoken)
                 .refreshtoken(refreshtoken)
                 .build();
     }
 
-    public static AuthResponseDTO.LoginResDto toLoginResDto(Long userId, String accessToken, String refreshToken){
-        return AuthResponseDTO.LoginResDto.builder()
+
+    public static AuthResponseDTO.LoginResDTO toLoginResDto(Long userId, String accessToken, String refreshToken){
+        return AuthResponseDTO.LoginResDTO.builder()
                 .userId(userId)
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
     }
 
-    public static AuthResponseDTO.RefreshResDto toRefreshResDto(String accessToken){
-        return AuthResponseDTO.RefreshResDto.builder()
+    public static AuthResponseDTO.RefreshResDTO toRefreshResDto(String accessToken){
+        return AuthResponseDTO.RefreshResDTO.builder()
                 .accessToken(accessToken)
                 .build();
     }
 
-    public static User toUser(AuthRequestDTO.JoinReqDto joinReqDto){
+    public static User toUser(AuthRequestDTO.JoinReqDTO joinReqDto){
         return User.builder()
                 .clientId(joinReqDto.getClientId())
                 .img(joinReqDto.getImg())

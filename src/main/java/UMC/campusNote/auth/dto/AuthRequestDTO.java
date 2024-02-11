@@ -15,7 +15,7 @@ public class AuthRequestDTO {
     @NoArgsConstructor
     @Getter
     @Builder
-    public static class JoinReqDto {
+    public static class JoinReqDTO {
         @NotBlank
         @Size(max=100)
         private String clientId;
@@ -37,8 +37,7 @@ public class AuthRequestDTO {
     @NoArgsConstructor
     @Builder
     @Getter
-    public static class LoginReqDto {
-
+    public static class LoginReqDTO {
         @NotBlank
         private String clientId;
     }

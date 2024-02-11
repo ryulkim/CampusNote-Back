@@ -18,7 +18,7 @@ public class FriendService {
     private final FriendRepository friendRepository;
     private final UserRepository userRepository;
 
-    public void addFriend(FriendRequestDTO.AddFriendReqDto addFriendReqDto) {
+    public void addFriend(FriendRequestDTO.AddFriendReqDTO addFriendReqDto) {
 
         Long inviterId = addFriendReqDto.getInviterUserId();
         Long invitedId = addFriendReqDto.getInvitedUserId();
