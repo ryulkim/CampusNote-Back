@@ -9,7 +9,7 @@ public class AuthResponseDTO {
     @AllArgsConstructor
     @Getter
     @Builder
-    public static class JoinResDto {
+    public static class JoinResDTO {
         private Long userId;
         private String accesstoken;
         private String refreshtoken;
@@ -20,7 +20,7 @@ public class AuthResponseDTO {
     @Builder
     @Getter
     @NoArgsConstructor
-    public static class LoginResDto {
+    public static class LoginResDTO {
         private Long userId;
         private String accessToken;
         private String refreshToken;
@@ -31,7 +31,7 @@ public class AuthResponseDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public static class RefreshResDto {
+    public static class RefreshResDTO {
 
         private String accessToken;
 

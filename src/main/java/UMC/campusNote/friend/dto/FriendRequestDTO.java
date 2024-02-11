@@ -9,7 +9,7 @@ public class FriendRequestDTO {
     @Getter
     @Setter
     @Builder
-    public static class AddFriendReqDto {
+    public static class AddFriendReqDTO {
         @NotNull
         private Long inviterUserId;
         @NotNull

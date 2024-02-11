@@ -37,7 +37,7 @@ public class FriendServiceTest {
     @DisplayName("[addFriend service 성공] Add friend test")
     public void addFriendTest(){
         // 테스트용 데이터 생성
-        FriendRequestDTO.AddFriendReqDto addFriendReqDto = new FriendRequestDTO.AddFriendReqDto();
+        FriendRequestDTO.AddFriendReqDTO addFriendReqDto = new FriendRequestDTO.AddFriendReqDTO();
         addFriendReqDto.setInviterUserId(1L);
         addFriendReqDto.setInvitedUserId(2L);
 
@@ -67,7 +67,7 @@ public class FriendServiceTest {
     public void addFriendTest_FRIEND_ALREADY_EXIST(){
 
         // 테스트용 데이터 생성
-        FriendRequestDTO.AddFriendReqDto addFriendReqDto = new FriendRequestDTO.AddFriendReqDto();
+        FriendRequestDTO.AddFriendReqDTO addFriendReqDto = new FriendRequestDTO.AddFriendReqDTO();
         addFriendReqDto.setInviterUserId(1L);
         addFriendReqDto.setInvitedUserId(2L);
 

@@ -31,7 +31,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional
-    public AuthResponseDTO.JoinResDto join(AuthRequestDTO.JoinReqDto joinReqDto) {
+    public AuthResponseDTO.JoinResDTO join(AuthRequestDTO.JoinReqDTO joinReqDto) {
         userRepository.findByClientId(joinReqDto.getClientId())
                 .ifPresent( user -> {
                     throw new GeneralException(USER_ALREADY_EXIST);
@@ -46,7 +46,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional
-    public AuthResponseDTO.LoginResDto login(AuthRequestDTO.LoginReqDto loginReqDto) {
+    public AuthResponseDTO.LoginResDTO login(AuthRequestDTO.LoginReqDTO loginReqDto) {
         //log.info("loginReqDto.getClientId() : {}", loginReqDto.getClientId());
         User user = userRepository.findByClientId(loginReqDto.getClientId())
                 .orElseThrow(() -> new GeneralException(USER_NOT_FOUND));
@@ -58,7 +58,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public AuthResponseDTO.RefreshResDto refreshToken(HttpServletRequest request, HttpServletResponse response) {
+    public AuthResponseDTO.RefreshResDTO refreshToken(HttpServletRequest request, HttpServletResponse response) {
         final String authHeader = request.getHeader(HEADER_AUTHORIZATION);
         final String refreshToken;
         final String userEmail;

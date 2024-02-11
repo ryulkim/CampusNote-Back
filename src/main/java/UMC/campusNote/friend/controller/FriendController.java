@@ -18,7 +18,7 @@ public class FriendController {
 
     private final FriendService friendService;
     @PostMapping
-    private ApiResponse addFriend(@Valid @RequestBody FriendRequestDTO.AddFriendReqDto addFriendReqDto){
+    private ApiResponse addFriend(@Valid @RequestBody FriendRequestDTO.AddFriendReqDTO addFriendReqDto){
 
         friendService.addFriend(addFriendReqDto);
 
