@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public interface AudioService {
+
     AudioResponseDTO.AudioDTO getAudio(Long audioId);
     Slice<AudioResponseDTO.AudioDTO> getAudios(Long noteId, Pageable pageable);
     AudioResponseDTO.AudioDTO saveAudio(S3UploadRequest request, Long noteId, MultipartFile audioFile);
