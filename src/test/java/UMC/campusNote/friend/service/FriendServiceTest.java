@@ -1,7 +1,6 @@
 package UMC.campusNote.friend.service;
 
 import UMC.campusNote.common.exception.GeneralException;
-
 import UMC.campusNote.friend.dto.FriendRequestDTO;
 import UMC.campusNote.friend.entity.Friend;
 import UMC.campusNote.friend.repository.FriendRepository;
@@ -38,6 +37,7 @@ public class FriendServiceTest {
     @DisplayName("[addFriend service 성공] Add friend test")
     public void addFriendTest(){
         // 테스트용 데이터 생성
+
         FriendRequestDTO.AddFriendReqDTO addFriendReqDto = new FriendRequestDTO.AddFriendReqDTO();
 
         addFriendReqDto.setInviterUserId(1L);

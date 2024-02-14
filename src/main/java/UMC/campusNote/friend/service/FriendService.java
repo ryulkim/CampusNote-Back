@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import static UMC.campusNote.common.code.status.ErrorStatus.*;
 
+
 @Service
 @RequiredArgsConstructor
 public class FriendService {
@@ -37,7 +38,6 @@ public class FriendService {
                 });
 
         Friend friend = FriendConverter.fromEntity(invited, inviter);
-
         friendRepository.save(friend);
     }
 }
