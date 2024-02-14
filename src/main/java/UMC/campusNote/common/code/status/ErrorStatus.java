@@ -49,8 +49,12 @@ public enum ErrorStatus implements BaseErrorCode {
     // 노트 관련 에러
     NOTE_NOT_FOUND(HttpStatus.BAD_REQUEST, "NOTE4001", "존재하지 않는 노트."),
 
+    // 이미지 관련 에러
+    IMAGE_NOT_FOUND(HttpStatus.BAD_REQUEST, "IMAGE4001", "존재하지 않는 이미지."),
+
     // 강의 노트 관련 에러
     LESSONNOTE_NOT_FOUND(HttpStatus.BAD_REQUEST, "LESSONNOTE4001", "존재하지 않는 강의 노트.");
+
     private final HttpStatus httpStatus;
     private final String code;
     private final String message;
