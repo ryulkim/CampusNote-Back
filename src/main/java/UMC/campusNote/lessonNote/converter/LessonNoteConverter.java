@@ -2,7 +2,7 @@ package UMC.campusNote.lessonNote.converter;
 
 import UMC.campusNote.lessonNote.dto.LessonNoteResponseDTO;
 import UMC.campusNote.lessonNote.entity.LessonNote;
-import UMC.campusNote.note.Note;
+import UMC.campusNote.note.entity.Note;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

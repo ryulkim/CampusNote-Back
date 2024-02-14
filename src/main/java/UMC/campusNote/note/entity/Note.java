@@ -1,4 +1,4 @@
-package UMC.campusNote.note;
+package UMC.campusNote.note.entity;
 
 import UMC.campusNote.audio.entity.Audio;
 import UMC.campusNote.common.BaseEntity;
@@ -49,4 +49,7 @@ public class Note extends BaseEntity {
     @Builder.Default
     private List<Audio> audioList = new ArrayList<>();
 
+    public void setNoteName(String noteName) {
+        this.noteName = noteName;
+    }
 }
