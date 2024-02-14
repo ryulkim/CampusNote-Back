@@ -2,7 +2,7 @@ package UMC.campusNote.image.converter;
 
 import UMC.campusNote.image.dto.ImageResponseDTO;
 import UMC.campusNote.image.entity.Image;
-import UMC.campusNote.note.Note;
+import UMC.campusNote.note.entity.Note;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
