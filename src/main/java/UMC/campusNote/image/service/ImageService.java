@@ -7,8 +7,8 @@ import UMC.campusNote.image.converter.ImageConverter;
 import UMC.campusNote.image.dto.ImageResponseDTO;
 import UMC.campusNote.image.entity.Image;
 import UMC.campusNote.image.repository.ImageRepository;
-import UMC.campusNote.note.Note;
-import UMC.campusNote.note.NoteRepository;
+import UMC.campusNote.note.entity.Note;
+import UMC.campusNote.note.repository.NoteRepository;
 import UMC.campusNote.user.entity.User;
 import UMC.campusNote.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +24,9 @@ import static UMC.campusNote.common.code.status.ErrorStatus.*;
 @Service
 @RequiredArgsConstructor
 public class ImageService {
-    private final NoteRepository noteRepository;
     private final UserRepository userRepository;
     private final S3Provider s3Provider;
+    private final NoteRepository noteRepository;
     private final ImageRepository imageRepository;
 
     public Image createImage(Long noteId, MultipartFile file, Long userId) throws IOException{
