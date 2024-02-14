@@ -7,6 +7,7 @@ import UMC.campusNote.user.entity.User;
 import static UMC.campusNote.user.entity.Role.USER;
 
 public class AuthConverter {
+
     public static AuthResponseDTO.JoinResDTO toJoinResDTO(Long userId, String accesstoken, String refreshtoken){
         return AuthResponseDTO.JoinResDTO.builder()
                 .userId(userId)
