@@ -6,10 +6,10 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public interface AuthService {
 
+    AuthResponseDTO.JoinResDTO join(AuthRequestDTO.JoinReqDTO joinReqDto);
 
-    JoinResDto join(JoinReqDto joinReqDto);
+    AuthResponseDTO.LoginResDTO login(AuthRequestDTO.LoginReqDTO loginReqDto);
 
-    LoginResDto login(LoginReqDto loginReqDto);
+    AuthResponseDTO.RefreshResDTO refreshToken(HttpServletRequest request, HttpServletResponse response);
 
-    RefreshResDto refreshToken(HttpServletRequest request, HttpServletResponse response);
 }
